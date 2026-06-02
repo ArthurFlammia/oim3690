@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+  hello.html  -  OIM3690, Session 03
+  I started with a bare hand-written skeleton (doctype, html, head, title,
+  body, and one <h1>). Then I used AI to enhance it: it added a paragraph,
+  a list of the tags I learned, and a little styling. The comments below
+  mark what each part does so I can explain it.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />                                      <!-- character encoding -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello!</title>                                         <!-- text on the browser tab -->
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.6;
+      color: #222;
+    }
+    h1 { color: #0a6b4d; }
+  </style>
+</head>
+<body>
+  <!-- This h1 was the one line in my hand-written skeleton -->
+  <h1>Hello, world!</h1>
+
+  <!-- Everything below was added when I enhanced the page with AI -->
+  <p>
+    This is my first HTML page for OIM3690. I wrote the skeleton by hand,
+    then asked AI to build it out so I could read what it changed.
+  </p>
+
+  <h2>Tags I learned today</h2>
+  <ul>
+    <!-- &lt; and &gt; are "HTML entities" - they print literal < and > -->
+    <li><strong>&lt;h1&gt;, &lt;h2&gt;</strong> &mdash; headings</li>
+    <li><strong>&lt;p&gt;</strong> &mdash; a paragraph of text</li>
+    <li><strong>&lt;ul&gt;</strong> and <strong>&lt;li&gt;</strong> &mdash; a bulleted list</li>
+    <li><strong>&lt;a&gt;</strong> &mdash; a link, like this one to
+        <a href="https://developer.mozilla.org/">MDN</a></li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arthur Flammia</title>
+
+  <!-- Loads two custom fonts from Google: Fraunces (headings) + Karla (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reusable values so colors stay consistent across the page */
+    :root {
+      --ink: #2b2b2b;     /* main text color */
+      --paper: #fbf9f4;   /* page background */
+      --green: #0a6b4d;   /* Babson-inspired accent */
+      --muted: #6b6b6b;   /* lighter text */
+    }
+
+    body {
+      font-family: 'Karla', sans-serif;
+      color: var(--ink);
+      background-color: var(--paper);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Centers the content and keeps it readable on wide screens */
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 44px;
+      margin: 0 0 4px 0;
+    }
+
+    .tagline {
+      color: var(--green);
+      font-weight: 500;
+      margin: 0 0 32px 0;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      margin-top: 40px;
+      border-bottom: 2px solid var(--green);
+      padding-bottom: 6px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    footer {
+      margin-top: 48px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    a { color: var(--green); }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header: who you are -->
+    <header>
+      <h1>Arthur Flammia</h1>
+      <p class="tagline">Babson College student</p>
+    </header>
+
+    <main>
+      <!-- Short intro -->
+      <section>
+        <p>
+          Hi, I'm Arthur &mdash; a student at Babson College studying
+          <!-- TODO: replace with your concentration -->
+          business. Right now I'm learning to build websites with AI in
+          OIM3690, and this is my home on the web.
+        </p>
+      </section>
+
+      <!-- Interests -->
+      <section>
+        <h2>What I'm into</h2>
+        <ul>
+          <!-- TODO: swap these for your real interests -->
+          <li>Entrepreneurship and small business</li>
+          <li>How AI is changing the way we build software</li>
+          <li>[Add a hobby or interest]</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- Footer with a link -->
+    <footer>
+      <p>Find me on <a href="https://github.com/ArthurFlammia">GitHub</a>.</p>
+    </footer>
+
+  </div>
+</body>
+</html>

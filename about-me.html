@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me &mdash; Arthur Flammia</title>
+
+  <!-- Same two Google fonts as the rest of the site -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink: #2b2b2b;
+      --paper: #fbf9f4;
+      --green: #0a6b4d;
+      --muted: #6b6b6b;
+    }
+
+    body {
+      font-family: 'Karla', sans-serif;
+      color: var(--ink);
+      background-color: var(--paper);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 40px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      margin-top: 36px;
+      color: var(--green);
+    }
+
+    li { margin-bottom: 8px; }
+
+    a { color: var(--green); }
+
+    .back {
+      display: inline-block;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>About Me</h1>
+
+    <section>
+      <p>
+        I'm Arthur Flammia, a student at Babson College. I built this page for
+        OIM3690, a course about building real websites with the help of AI
+        tools. The goal isn't to memorize syntax &mdash; it's to understand
+        enough to read, question, and improve the code AI gives me.
+      </p>
+    </section>
+
+    <section>
+      <h2>A few quick facts</h2>
+      <ul>
+        <!-- TODO: make these true for you -->
+        <li>I'm studying [your concentration] at Babson.</li>
+        <li>Outside of class I like [a hobby].</li>
+        <li>Something I'm proud of: [a project, job, or experience].</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Why I'm taking this course</h2>
+      <p>
+        <!-- TODO: 1-2 sentences in your own voice -->
+        I want to be able to build and ship my own ideas instead of waiting
+        on someone else to build them for me.
+      </p>
+    </section>
+
+    <a class="back" href="index.html">&larr; Back to home</a>
+  </div>
+</body>
+</html>
