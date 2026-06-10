@@ -11,11 +11,13 @@
   <style>
     /* Reusable values so colors stay consistent across the page */
     :root {
-      --ink: #2b2b2b;     /* main text color */
-      --paper: #fbf9f4;   /* page background */
-      --green: #0a6b4d;   /* Babson-inspired accent */
-      --muted: #6b6b6b;   /* lighter text */
+      --ink: #2b2b2b;    /* main text color */
+      --paper: #fbf9f4;  /* page background */
+      --green: #0a6b4d;  /* Babson-inspired accent */
+      --muted: #6b6b6b;  /* lighter text */
     }
+
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Karla', sans-serif;
@@ -25,16 +27,65 @@
       margin: 0;
     }
 
+    /* Fluid images: never overflow their container */
+    img { max-width: 100%; height: auto; }
+
+    /* ===== NAV BAR ===== */
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px 24px;
+    }
+
+    .site-nav .brand {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    /* The hamburger button: hidden on desktop, shown on mobile */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      color: var(--green);
+      font-size: 20px;
+      line-height: 1;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
     /* Centers the content and keeps it readable on wide screens */
     .container {
       max-width: 640px;
       margin: 0 auto;
-      padding: 64px 24px;
+      padding: 32px 24px 64px;
     }
 
     h1 {
       font-family: 'Fraunces', serif;
-      font-size: 44px;
+      font-size: 32px;
       margin: 0 0 4px 0;
     }
 
@@ -61,9 +112,47 @@
     }
 
     a { color: var(--green); }
+
+    /* ===== MOBILE-FIRST MEDIA QUERIES ===== */
+    /* Base styles above are for small screens. On narrow screens we
+       hide the links and show the hamburger button instead. */
+    @media (max-width: 600px) {
+      .nav-toggle { display: block; }
+
+      /* Stack links vertically; hidden until the menu is opened */
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      /* JS adds this class when the hamburger is tapped */
+      .nav-links.open { display: flex; }
+    }
+
+    /* On wider screens, give headings a bit more presence */
+    @media (min-width: 700px) {
+      h1 { font-size: 44px; }
+      .container { padding-top: 48px; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Nav bar with a few links; collapses into a hamburger on mobile -->
+  <nav class="site-nav">
+    <a href="index.html" class="brand">Arthur Flammia</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about-me.html">About</a></li>
+      <li><a href="hello.html">Hello</a></li>
+      <li><a href="https://github.com/ArthurFlammia">GitHub</a></li>
+    </ul>
+  </nav>
+
   <div class="container">
 
     <!-- Header: who you are -->
@@ -99,5 +188,16 @@
     </footer>
 
   </div>
+
+  <!-- Toggles the mobile menu open/closed when the hamburger is tapped -->
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      const isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+  </script>
+
 </body>
 </html>
