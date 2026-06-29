@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Discount</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .card {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    h1 { margin-top: 0; }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .checkbox-row {
+      margin-top: 15px;
+    }
+    button {
+      padding: 10px 14px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Checkout</h1>
+
+    <label for="total">Order total ($)</label>
+    <input type="number" id="total" placeholder="e.g. 120">
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="member">
+      <label for="member" style="display:inline; font-weight:normal;">I am a member</label>
+    </div>
+
+    <button id="checkout-btn">Calculate total</button>
+
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // ===== getDiscount was written by hand, no AI =====
+    // total is the order amount. isMember is true or false.
+    // The function returns the discount AMOUNT in dollars.
+    function getDiscount(total, isMember) {
+      if (isMember) {
+        // Members get 15% off
+        return total * 0.15;
+      } else if (total > 100) {
+        // Non-members get 10% off if they spend more than $100
+        return total * 0.10;
+      } else {
+        // Everyone else gets no discount
+        return 0;
+      }
+    }
+
+    // ===== Below here was enhanced with AI to build a fuller checkout page =====
+
+    // Find the input, the checkbox, the button, and the result line
+    const totalInput = document.getElementById("total");
+    const memberCheckbox = document.getElementById("member");
+    const checkoutBtn = document.getElementById("checkout-btn");
+    const result = document.getElementById("result");
+
+    // When the button is clicked, work out the final price
+    checkoutBtn.addEventListener("click", function () {
+      // Read the order total as a number
+      const total = Number(totalInput.value);
+      // Read whether the "I am a member" box is checked (true or false)
+      const isMember = memberCheckbox.checked;
+
+      // Use the hand-written function to get the discount amount
+      const discount = getDiscount(total, isMember);
+
+      // The final price is the total minus the discount
+      const finalPrice = total - discount;
+
+      // Show three lines: discount, savings, and final price
+      // toFixed(2) formats the numbers to 2 decimal places
+      result.textContent =
+        "Order total: $" + total.toFixed(2) + "\n" +
+        "Discount: $" + discount.toFixed(2) + "\n" +
+        "You pay: $" + finalPrice.toFixed(2);
+    });
+  </script>
+
+</body>
+</html>
