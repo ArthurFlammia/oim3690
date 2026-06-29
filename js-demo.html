@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Demo</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .box {
+      background-color: #ffffff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    h2 { margin-top: 0; }
+    button {
+      padding: 8px 14px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>JavaScript Demo</h1>
+  <p>Each box below shows a different JavaScript feature. Read the code in the script at the bottom.</p>
+
+  <!-- Feature 1: change text when a button is clicked -->
+  <div class="box">
+    <h2>1. Change text</h2>
+    <p id="message">Click the button to change this text.</p>
+    <button id="change-text-btn">Change text</button>
+  </div>
+
+  <!-- Feature 2: a counter that goes up -->
+  <div class="box">
+    <h2>2. Counter</h2>
+    <p>Count: <span id="count">0</span></p>
+    <button id="add-btn">Add one</button>
+  </div>
+
+  <!-- Feature 3: show the current date and time -->
+  <div class="box">
+    <h2>3. Current time</h2>
+    <p id="time">Press the button to show the time.</p>
+    <button id="time-btn">Show time</button>
+  </div>
+
+  <!-- Feature 4: change the background color of the page -->
+  <div class="box">
+    <h2>4. Change background color</h2>
+    <button id="color-btn">Random background</button>
+  </div>
+
+  <script>
+    // FEATURE 1: change text
+    // Find the button by its id
+    const changeTextBtn = document.getElementById("change-text-btn");
+    // When it is clicked, change the text inside the paragraph with id "message"
+    changeTextBtn.addEventListener("click", function () {
+      document.getElementById("message").textContent = "The text has been changed!";
+    });
+
+    // FEATURE 2: counter
+    // Keep a number in a variable. This is the "state" that we change.
+    let count = 0;
+    const addBtn = document.getElementById("add-btn");
+    addBtn.addEventListener("click", function () {
+      count = count + 1; // add one to the count
+      // Show the new count on the page
+      document.getElementById("count").textContent = count;
+    });
+
+    // FEATURE 3: current time
+    const timeBtn = document.getElementById("time-btn");
+    timeBtn.addEventListener("click", function () {
+      // new Date() gets the current date and time from the computer
+      const now = new Date();
+      // toLocaleTimeString() turns it into a readable time like "11:21:45 AM"
+      document.getElementById("time").textContent = now.toLocaleTimeString();
+    });
+
+    // FEATURE 4: random background color
+    const colorBtn = document.getElementById("color-btn");
+    colorBtn.addEventListener("click", function () {
+      // Math.random() gives a number between 0 and 1
+      // Multiply by 256 and round down to get a number from 0 to 255 for red, green, blue
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      // Build an rgb() color string and set it as the page background
+      document.body.style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
+    });
+  </script>
+
+</body>
+</html>
