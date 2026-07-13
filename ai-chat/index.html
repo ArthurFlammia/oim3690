@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    #chat-box { border: 1px solid #ccc; border-radius: 8px; padding: 12px; min-height: 240px; margin-bottom: 12px; }
+    .user { text-align: right; color: #1a5fb4; margin: 6px 0; }
+    .assistant { text-align: left; color: #222; margin: 6px 0; }
+    #message-input { padding: 8px; width: 65%; }
+    button { padding: 8px 14px; }
+  </style>
+</head>
+<body>
+  <h1>AI Chat</h1>
+  <div id="chat-box"></div>
+  <input id="message-input" placeholder="Ask me anything">
+  <button id="send-btn">Send</button>
+
+  <!-- config.js holds the API key. It is in .gitignore and never committed. -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
