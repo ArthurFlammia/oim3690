@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch Fun</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 40px auto; padding: 0 16px; }
+    button { padding: 8px 14px; }
+    #output { margin-top: 16px; font-size: 1.1em; }
+  </style>
+</head>
+<body>
+  <h1>Fetch Fun</h1>
+  <button id="surprise-btn">Surprise me</button>
+  <div id="output">Click the button!</div>
+
+  <script>
+    const output = document.getElementById("output");
+
+    // Fetch one API, read one field out of the JSON.
+    // The timestamp makes each URL unique because this API caches responses.
+    async function getAdvice() {
+      output.textContent = "Loading...";
+      try {
+        const response = await fetch("https://api.adviceslip.com/advice?t=" + Date.now());
+        const data = await response.json();
+        output.textContent = data.slip.advice;
+      } catch (error) {
+        output.textContent = "Could not load advice: " + error.message;
+      }
+    }
+
+    // Extension: a second API that returns a dog picture URL
+    async function getDog() {
+      output.textContent = "Loading...";
+      try {
+        const response = await fetch("https://dog.ceo/api/breeds/image/random");
+        const data = await response.json();
+        output.innerHTML = '<img src="' + data.message + '" alt="Random dog" style="max-width:100%">';
+      } catch (error) {
+        output.textContent = "Could not load dog: " + error.message;
+      }
+    }
+
+    // Randomly pick one of the two APIs
+    document.getElementById("surprise-btn").addEventListener("click", function () {
+      if (Math.random() < 0.5) {
+        getAdvice();
+      } else {
+        getDog();
+      }
+    });
+  </script>
+</body>
+</html>
