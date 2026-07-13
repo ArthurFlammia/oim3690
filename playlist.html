@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Playlist</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 40px auto; padding: 0 16px; }
+    li { margin: 8px 0; }
+    input { padding: 8px; width: 60%; }
+    button { padding: 8px 14px; }
+  </style>
+</head>
+<body>
+  <h1>My Playlist</h1>
+  <ul id="playlist"></ul>
+  <input id="song-input" placeholder="Song - Artist">
+  <button id="add-btn">Add Song</button>
+
+  <script>
+    // One array is the single source of truth for the page
+    const songs = [
+      "Blinding Lights - The Weeknd",
+      "Levitating - Dua Lipa",
+      "Heat Waves - Glass Animals",
+      "As It Was - Harry Styles"
+    ];
+
+    // Loop over the array, build one <li> per entry
+    function renderPlaylist() {
+      const list = document.getElementById("playlist");
+      list.innerHTML = "";
+      for (const song of songs) {
+        const li = document.createElement("li");
+        li.textContent = song;
+        list.appendChild(li);
+      }
+    }
+
+    // Extension: change the data, then re-render from it
+    document.getElementById("add-btn").addEventListener("click", function () {
+      const input = document.getElementById("song-input");
+      if (input.value.trim() !== "") {
+        songs.push(input.value.trim());
+        input.value = "";
+        renderPlaylist();
+      }
+    });
+
+    renderPlaylist();
+  </script>
+</body>
+</html>
