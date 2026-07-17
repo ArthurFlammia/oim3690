@@ -13,7 +13,7 @@ This is my course repo for OIM3690. It holds class exercises, weekly logs, and l
 | MP1 — Website for Someone Else | [repo](https://github.com/ArthurFlammia/platinum-pools-site) | [live](https://arthurflammia.github.io/platinum-pools-site/) |
 | MP2 — Interactive Web Tool | [repo](https://github.com/ArthurFlammia/tip-splitter) | [live](https://arthurflammia.github.io/tip-splitter/) |
 | MP3 — API-Powered App | [repo](https://github.com/ArthurFlammia/weather-now) | [live](https://arthurflammia.github.io/weather-now/) |
-| Final Project |  |  |
+| Final Project — Recipe Box | [repo](https://github.com/ArthurFlammia/recipe-box) | [live](https://arthurflammia.github.io/recipe-box/) |
 
 ## Weekly Logs
 
