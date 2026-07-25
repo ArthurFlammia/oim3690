@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Journey — Arthur Flammia | OIM3690</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:     #E9EDF1;
+    --grid:      #DAE1E8;
+    --ink:       #0F2338;
+    --ink-soft:  #55697D;
+    --pen:       #B32B23;
+    --cell:      24px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--paper);
+    /* graph paper: this is a lab notebook, so it gets ruled like one */
+    background-image:
+      repeating-linear-gradient(to right,  var(--grid) 0 1px, transparent 1px var(--cell)),
+      repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px var(--cell));
+    color: var(--ink);
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .sheet {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 72px 24px 96px;
+  }
+
+  /* ---------- shared type ---------- */
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pen);
+    margin: 0 0 12px;
+  }
+
+  h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: clamp(38px, 8vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0 0 20px;
+  }
+
+  h2 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+
+  h3 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    font-size: 21px;
+    margin: 0 0 10px;
+  }
+
+  p { margin: 0 0 16px; }
+
+  a { color: var(--pen); }
+
+  .lede {
+    font-size: 21px;
+    max-width: 60ch;
+    color: var(--ink);
+  }
+
+  .section-note {
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-bottom: 30px;
+  }
+
+  /* red-pen rule under the header */
+  .rule {
+    height: 3px;
+    background: var(--pen);
+    border: 0;
+    margin: 40px 0 0;
+    max-width: 120px;
+  }
+
+  section { margin-top: 76px; }
+
+  /* ---------- the chart: bars drawn on the page's own grid ---------- */
+  .chart {
+    background: rgba(255,255,255,0.62);
+    border: 1px solid var(--grid);
+    padding: 24px 20px 16px;
+  }
+
+  .chart-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .chart-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink);
+    text-align: right;
+  }
+
+  .track {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+  }
+
+  .track span {
+    height: 18px;
+    background: transparent;
+    border: 1px solid var(--grid);
+  }
+
+  .track span.on   { background: var(--ink);   border-color: var(--ink); }
+  .track span.new  { background: var(--pen);   border-color: var(--pen); }
+
+  .axis {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .axis-weeks {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .legend {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 16px;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 10px; height: 10px;
+    vertical-align: -1px;
+    margin-right: 4px;
+  }
+  .swatch.pen { background: var(--pen); }
+  .swatch.ink { background: var(--ink); }
+
+  /* ---------- the spine: ten weeks, each anchored by real code ---------- */
+  .entry {
+    border-left: 2px solid var(--grid);
+    padding: 0 0 44px 26px;
+    position: relative;
+  }
+  .entry:last-child { padding-bottom: 0; }
+
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 9px;
+    width: 10px;
+    height: 10px;
+    background: var(--pen);
+  }
+
+  .week-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--pen);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .entry p { max-width: 62ch; }
+
+  figure {
+    margin: 14px 0 0;
+  }
+
+  figcaption {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    padding-bottom: 6px;
+  }
+
+  pre {
+    background: var(--ink);
+    color: #DCE6F0;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    padding: 16px 18px;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  /* ---------- questions that answered themselves ---------- */
+  .qa {
+    background: rgba(255,255,255,0.62);
+    border: 1px solid var(--grid);
+    border-left: 3px solid var(--pen);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .qa .asked {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+
+  .qa .q { font-style: italic; margin: 0 0 12px; }
+
+  .qa .a {
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--grid);
+    color: var(--ink);
+  }
+
+  .qa .a strong { font-family: "Space Grotesk", sans-serif; }
+
+  .qa.open .a { color: var(--pen); }
+
+  footer {
+    margin-top: 76px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grid);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--pen);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 620px) {
+    body { font-size: 17px; }
+    .sheet { padding: 48px 18px 72px; }
+    .chart-row, .axis { grid-template-columns: 84px 1fr; gap: 8px; }
+    .chart-label { font-size: 10px; }
+    .axis-weeks { font-size: 8px; }
+    .entry { padding-left: 18px; }
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <p class="eyebrow">OIM3690 · Summer 2026 · Weeks 01–10</p>
+    <h1>Ten weeks,<br>one file at a time.</h1>
+    <p class="lede">
+      I started this course by writing seven lines of HTML and not really knowing
+      what the <code>&lt;head&gt;</code> tag was for. I finished it shipping an app
+      that talks to a live API, handles the request failing, and remembers what you
+      saved after you close the tab. This page is built from my ten weekly logs —
+      the code below is the actual code I wrote, pulled straight out of them.
+    </p>
+    <hr class="rule">
+  </header>
+
+  <!-- ===================== THE CHART ===================== -->
+  <section>
+    <h2>What I could actually do, by week</h2>
+    <p class="section-note">
+      Each square is one week. A red square is the week a skill first showed up in
+      my logs; dark squares are the weeks after, once I was using it without
+      thinking about it.
+    </p>
+
+    <div class="chart">
+      <div class="chart-row">
+        <div class="chart-label">HTML structure</div>
+        <div class="track" role="img" aria-label="HTML structure: started week 1, used weeks 1 through 10">
+          <span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">CSS &amp; selectors</div>
+        <div class="track" role="img" aria-label="CSS and selectors: started week 3, used weeks 3 through 10">
+          <span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">Flexbox layout</div>
+        <div class="track" role="img" aria-label="Flexbox layout: started week 4, used weeks 4 through 10">
+          <span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">JavaScript basics</div>
+        <div class="track" role="img" aria-label="JavaScript basics: started week 5, used weeks 5 through 10">
+          <span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">DOM &amp; events</div>
+        <div class="track" role="img" aria-label="DOM and events: started week 5, used weeks 5 through 10">
+          <span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">Holding state</div>
+        <div class="track" role="img" aria-label="Holding state in an array: started week 7, used weeks 7 through 10">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">fetch + async/await</div>
+        <div class="track" role="img" aria-label="fetch and async await: started week 8, used weeks 8 through 10">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">Error handling</div>
+        <div class="track" role="img" aria-label="Error handling with try catch finally: started week 8, used weeks 8 through 10">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-label">localStorage</div>
+        <div class="track" role="img" aria-label="localStorage: started week 8, used weeks 8 through 10">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="new"></span><span class="on"></span><span class="on"></span>
+        </div>
+      </div>
+
+      <div class="axis">
+        <div></div>
+        <div class="axis-weeks">
+          <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
+          <span>06</span><span>07</span><span>08</span><span>09</span><span>10</span>
+        </div>
+      </div>
+
+      <p class="legend">
+        <span class="swatch pen"></span>first week used &nbsp;&nbsp;
+        <span class="swatch ink"></span>in regular use
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== THE SPINE ===================== -->
+  <section>
+    <h2>The arc, in my own code</h2>
+    <p class="section-note">
+      Ten entries, one per week. Every snippet here is lifted from that week's log,
+      which means it's code I wrote and code I can explain.
+    </p>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 01</span>
+      <h3>Setup, and seven lines of HTML</h3>
+      <p>
+        Got VS Code, Git, GitHub Desktop and Chrome working, put my personal site
+        live, and made the <code>oim3690</code> repo. The site itself came out of a
+        prompt template from the slides, and what came back had things in it I
+        hadn't asked for — a <code>:root</code> block declaring colors somewhere
+        completely separate from where they got used. It took me a while to work out
+        that <code>var(--green)</code> was pointing back up to it. The first thing I
+        wrote by hand was the smallest page that counts as a page.
+      </p>
+      <figure>
+        <figcaption>hello.html · HTML</figcaption>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;Hello!&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 02</span>
+      <h3>More pages, and the idea of grouping</h3>
+      <p>
+        Added <code>about-me.html</code> and <code>index.html</code> to the course
+        repo and started hunting for an MP1 client. This is the week I settled into
+        a pattern I've used since: generate, then annotate. I wrote the skeleton of
+        <code>hello.html</code> by hand, had AI build it out, then went through and
+        commented every part — on the theory that if I couldn't write the comment I
+        didn't actually understand the line.
+      </p>
+      <figure>
+        <figcaption>about-me.html · HTML</figcaption>
+        <pre><code>&lt;section&gt;
+  &lt;h2&gt;A few quick facts&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;I'm studying business at Babson.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/section&gt;</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 03</span>
+      <h3>CSS, and my first real bug</h3>
+      <p>
+        Built <code>css/styles.css</code> and wrote rules by hand using all four
+        selector types. This was also the week I caught something AI had done wrong:
+        the CSS had been pasted inside <code>about-me.html</code> instead of into
+        the stylesheet. Finding that taught me more than the rules did.
+      </p>
+      <figure>
+        <figcaption>css/styles.css · CSS</figcaption>
+        <pre><code>.button-link {
+  display: inline-block;
+  background-color: rgb(0, 102, 51);
+  color: rgb(255, 255, 255);
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+/* a state, not a separate element */
+.button-link:hover {
+  background-color: rgb(0, 153, 76);
+}</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 04</span>
+      <h3>Building for someone who isn't me</h3>
+      <p>
+        MP1: a three-page site for Platinum Pools. Flexbox put the service cards in
+        a row and a media query stacked them on phones. The bigger lesson was
+        non-technical — my client Vernon said it looked too plain and asked for
+        photos, so I added a gallery and reworked the colors to match his branding.
+        The first version being "done" and the first version being right are
+        different things.
+      </p>
+      <figure>
+        <figcaption>css/styles.css · CSS</figcaption>
+        <pre><code>.card-row {
+  display: flex;
+  gap: 16px;
+}
+
+.card {
+  flex: 1;               /* each card takes equal width */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+}</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 05</span>
+      <h3>Reading JavaScript before writing it</h3>
+      <p>
+        We were handed <code>js-demo.html</code> and told to figure out what it did.
+        No writing, just reading. Working through the random background changer is
+        where <code>Math.random()</code>, <code>Math.floor()</code> and array
+        indexing finally clicked as three pieces of one idea.
+      </p>
+      <figure>
+        <figcaption>js-demo.html · JavaScript</figcaption>
+        <pre><code>const bgColors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff"];
+const randomIndex = Math.floor(Math.random() * bgColors.length);
+document.querySelector("body").style.backgroundColor = bgColors[randomIndex];</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 06</span>
+      <h3>MP2: making a page do something</h3>
+      <p>
+        A tip splitter, in plain JavaScript. The thing I actually learned here was
+        why <code>Number()</code> is not optional: input values come out of a form
+        as text, so without converting them JavaScript glues them together as
+        strings instead of adding them.
+      </p>
+      <figure>
+        <figcaption>tip-splitter · JavaScript</figcaption>
+        <pre><code>const bill = Number(document.getElementById("bill").value);
+const tipPercent = Number(document.getElementById("tip").value);
+const people = Number(document.getElementById("people").value);
+
+const tipAmount = bill * (tipPercent / 100);
+const total = bill + tipAmount;
+const perPerson = total / people;
+
+resultsBox.innerHTML = "Each person pays: $" + perPerson.toFixed(2);</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 07</span>
+      <h3>The app starts remembering things</h3>
+      <p>
+        AI told me straight out that my tip splitter was too simple for MP2, which
+        was fair. I rebuilt it around a <code>history</code> array so it keeps every
+        split and shows a session total. This was the week I understood that the
+        array is the app — the list on screen and the total are both just the array,
+        drawn.
+      </p>
+      <figure>
+        <figcaption>tip-splitter · JavaScript</figcaption>
+        <pre><code>history.push({
+  id: nextId,
+  bill: bill,
+  people: people,
+  total: total,
+  each: each,
+});
+nextId = nextId + 1;</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 08</span>
+      <h3>MP3: talking to something that might not answer</h3>
+      <p>
+        Weather Now, built on the Open-Meteo API. Two requests that have to happen
+        in order — city name to coordinates, then coordinates to forecast. I tested
+        it by turning on airplane mode to make sure the failure path actually
+        worked, which is a thing I would not have thought to do in week 4.
+      </p>
+      <figure>
+        <figcaption>weather-now · JavaScript</figcaption>
+        <pre><code>try {
+  const place = await geocodeCity(name);
+  if (place === null) {
+    setStatus("Couldn't find that city. Check the spelling and try again.");
+    return;
+  }
+  const weather = await fetchForecast(place.latitude, place.longitude);
+  renderCurrent(place, weather.current);
+  renderForecast(weather.daily);
+} catch (error) {
+  setStatus("Something went wrong. Check your connection and try again.");
+} finally {
+  searchBtn.disabled = false;
+}</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 09</span>
+      <h3>Recipe Box: designing around an API's limits</h3>
+      <p>
+        My final project. The detail view broke first — I tried to render
+        instructions off a <code>filter.php</code> result and got
+        <code>undefined</code>, which is what sent me to the raw JSON. Turns out
+        that endpoint only returns an id, a name and a thumbnail, and neither of
+        TheMealDB's two search endpoints alone handles what people actually type.
+        So I chained them: dish name first, and if that comes back empty, search the
+        same word as an ingredient. The user gets one search box and never has to
+        know there were two.
+      </p>
+      <figure>
+        <figcaption>recipe-box/js/script.js · JavaScript</figcaption>
+        <pre><code>const nameResponse = await fetch(API_BASE + "/search.php?s=" + encodeURIComponent(query));
+const nameData = await nameResponse.json();
+
+if (nameData.meals) {
+  lastResults = nameData.meals.map(simplify);
+} else {
+  // no name match — try it as an ingredient instead
+  const ingResponse = await fetch(API_BASE + "/filter.php?i=" + encodeURIComponent(query));
+  const ingData = await ingResponse.json();
+  lastResults = (ingData.meals || []).map(simplify);
+}</code></pre>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <span class="week-tag">WEEK 10</span>
+      <h3>Shipping, and the small stuff that matters</h3>
+      <p>
+        Demo Day, then cleanup. The detail view is a good example of what week 10
+        looks like versus week 5: TheMealDB stores ingredients as twenty separate
+        numbered fields, most of them empty, so the list has to be rebuilt field by
+        field and filtered — otherwise an 8-ingredient recipe renders twelve blank
+        bullet points.
+      </p>
+      <figure>
+        <figcaption>recipe-box/js/script.js · JavaScript</figcaption>
+        <pre><code>for (let i = 1; i &lt;= 20; i++) {
+  const ing = apiMeal["strIngredient" + i];
+  const measure = apiMeal["strMeasure" + i];
+  if (ing &amp;&amp; ing.trim() !== "") {
+    ingredientItems +=
+      "&lt;li&gt;" + ing + " &lt;span&gt;— " + (measure || "").trim() + "&lt;/span&gt;&lt;/li&gt;";
+  }
+}</code></pre>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== QUESTIONS ===================== -->
+  <section>
+    <h2>Questions that answered themselves</h2>
+    <p class="section-note">
+      Every log ends with a question. Going back through them, some of the questions
+      turned into the next project.
+    </p>
+
+    <div class="qa">
+      <p class="asked">Asked in Week 07</p>
+      <p class="q">
+        "How do I make the saved splits stay there after the page refreshes? Right
+        now all the data disappears when the browser reloads."
+      </p>
+      <p class="a">
+        <strong>Answered in Week 08.</strong> Weather Now used
+        <code>localStorage</code> to hold recent searches, and by Week 09 the whole
+        favorites system in Recipe Box was built on it —
+        <code>JSON.stringify()</code> going in, <code>JSON.parse()</code> coming
+        back out.
+      </p>
+    </div>
+
+    <div class="qa">
+      <p class="asked">Asked in Week 06</p>
+      <p class="q">
+        "Leaving a field blank or entering letters makes <code>Number()</code>
+        return NaN. How do I check for invalid input and show a friendly message
+        instead of a broken result?"
+      </p>
+      <p class="a">
+        <strong>Answered in Week 08 and 09.</strong> Guard the bad input before it
+        reaches the logic, and give the user a message that says what to do next —
+        not "error," but "Try another word, like beef or rice."
+      </p>
+    </div>
+
+    <div class="qa">
+      <p class="asked">Asked in Week 03</p>
+      <p class="q">
+        "When two CSS rules have the same specificity the later one wins — but how
+        do I tell which selector is more specific without counting by hand?"
+      </p>
+      <p class="a">
+        <strong>Answered by DevTools.</strong> The Styles panel shows overridden
+        rules struck through. I stopped reasoning about specificity in my head and
+        started just looking at it.
+      </p>
+    </div>
+
+    <div class="qa open">
+      <p class="asked">Asked in Week 08 · still open</p>
+      <p class="q">
+        "<code>await geocodeCity(name)</code> pauses until the API responds, but the
+        page stays responsive the whole time. Where does the waiting actually
+        happen?"
+      </p>
+      <p class="a">
+        <strong>Still open.</strong> I understand what <code>await</code> does well
+        enough to use it and not at all well enough to explain it, and that gap has
+        bothered me for three weeks. It's the first thing I want to fix next.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== CLOSE ===================== -->
+  <section>
+    <h2>What actually changed</h2>
+    <p>
+      The code got longer, but that isn't the real difference. In Week 1, when AI
+      handed me a file, I read it to check whether it looked right. By Week 9 I was
+      reading it to find where it would break — and testing for that on purpose,
+      with airplane mode on and nonsense words in the search box. The bug I'm
+      proudest of catching didn't throw an error at all: TheMealDB returns
+      <code>{"meals": null}</code> with a 200 when nothing matches, so nothing
+      crashed and nothing rendered. It just silently did nothing. I only found it
+      because I went looking.
+    </p>
+    <p>
+      Where I've landed on AI: it's good at getting a structure onto the page from
+      material I've already produced, and bad at sounding like me. The editing pass
+      isn't optional cleanup — it's most of the work. This page is a fair example.
+      It was drafted from my <code>logs/</code> folder and then I rewrote the parts
+      that weren't mine.
+    </p>
+    <p>
+      The other thing I'd tell myself in Week 1: "it works" isn't the finish line.
+      Vernon saying the pool site looked too plain in Week 4, and rewriting the
+      empty state in Week 10 so it says "try beef or rice" instead of "no results" —
+      those are the same lesson showing up six weeks apart.
+    </p>
+  </section>
+
+  <footer>
+    Arthur Flammia · OIM3690, AI-Powered Web Development · Babson College, Summer 2026<br>
+    Built from <a href="logs/">logs/wk01.md – logs/wk10.md</a> ·
+    <a href="https://github.com/ArthurFlammia/oim3690">github.com/ArthurFlammia/oim3690</a>
+  </footer>
+
+</main>
+</body>
+</html>
